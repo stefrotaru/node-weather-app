@@ -1,10 +1,11 @@
 const path = require("path");
 const express = require("express");
-const hbs = require('hbs');
-const geocode = require('./utils/geocode.js');
-const forecast = require('./utils/forecast.js');
+const hbs = require("hbs");
+const geocode = require("./utils/geocode.js");
+const forecast = require("./utils/forecast.js");
 
 const app = express();
+const port = process.env.PORT || 3000;
 
 // Define paths for Express config
 const publicDirPath = path.join(__dirname, "../public");
@@ -37,64 +38,67 @@ app.get("/help", (req, res) => {
   res.render("help", {
     title: "Help",
     message: "Don't blame it on the weather!",
-    name: "Stefan Rotaru"
+    name: "Stefan Rotaru",
   });
 });
 
 app.get("/weather", (req, res) => {
   if (!req.query.address) {
     return res.send({
-      error: "address not provided"
-    })
+      error: "address not provided",
+    });
   }
 
-  geocode(req.query.address, (error, { latitude, longitude, location } = {}) => {
-    if (error) {
-        return res.send({ error })
-    }
-    
-    forecast(latitude, longitude, (error, forecastData) => {
+  geocode(
+    req.query.address,
+    (error, { latitude, longitude, location } = {}) => {
+      if (error) {
+        return res.send({ error });
+      }
+
+      forecast(latitude, longitude, (error, forecastData) => {
         if (error) {
-            return res.send({ error })
+          return res.send({ error });
         }
         res.send({
           forecast: forecastData,
           location,
           address: req.query.address,
         });
-      })
-  })
+      });
+    }
+  );
 });
 
 app.get("/products", (req, res) => {
   if (!req.query.search) {
     return res.send({
-      error: "you must provide a search term"
-    })
+      error: "you must provide a search term",
+    });
   }
 
-  console.log(req.query)
+  console.log(req.query);
   res.send({
-    products: []
-  })
-})
+    products: [],
+  });
+});
 
-app.get('/help/*', (req, res) => {
+app.get("/help/*", (req, res) => {
   res.render("404", {
     title: "404",
     message: "Help article not found!",
-    name: "Stefan Rotaru"
-  })
-})
+    name: "Stefan Rotaru",
+  });
+});
 
-app.get('*', (req, res) => {
+app.get("*", (req, res) => {
   res.render("404", {
     title: "404",
     message: "Page not found",
-    name: "Stefan Rotaru"
-  })
-})
+    name: "Stefan Rotaru",
+  });
+});
 
-app.listen(3000, () => {
-  console.log("Server is up on port 3000.");
+app.listen(port, () => {
+  console.log(`Server is up on port ${port}.`);
 });
