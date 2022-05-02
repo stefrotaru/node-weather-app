@@ -4,14 +4,14 @@ const forecast = (lat, long, callback) => {
     const url = `http://api.weatherstack.com/current?access_key=babe2cb5623c57bb904cae8c0cb64265&query=${lat},${long}`
 
     request({ url, json: true }, (error, response) => {
-        const { weather_descriptions, temperature, feelslike } = response.body.current;
+        const { weather_descriptions, temperature, feelslike, precip, humidity, wind_dir, wind_speed, cloudcover, observation_time } = response.body.current;
 
         if (error) {
             callback('Unable to connect to weather service!', undefined)
         } else if (!response.body.current) {
             callback(response.body.error.info, undefined)
         } else {
-            callback(undefined, `${weather_descriptions[0]}. It is currently ${temperature} degrees out. It feels like ${feelslike} degrees.`)
+            callback(undefined, `Weather description: ${weather_descriptions[0]}. It is currently ${temperature}°C out and it feels like ${feelslike}°C. There are ${precip}% chances of precipitations and the humidity levels are at ${humidity}%. The wind blows from ${wind_dir} with a speed of ${wind_speed} km/h. ${cloudcover}% of the sky is covered by clouds. This weather observation was made at ${observation_time}.`)
         }
     })
 }
