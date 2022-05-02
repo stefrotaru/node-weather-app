@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <title>About</title>
+    <link rel="icon" href="/images/cloudy.png">
+    <link rel="stylesheet" href="./css/styles.css">
+  </head>
+
+  <body>
+    <div class="main-content">
+      {{>header}}
+      <img class="aboutMeImage" src="./images/weatherman.jpeg"> 
+      <p>Hello, dear world wide web explorer!</p>
+      <p>I'm a simple Node.js app made with a couple of nifty npm packages (express, handlebars, request).
+        Using a geolocation API (mapbox) and a forecast API (weatherstack) I'm able to geocode your search,
+        hopefully a real location, and then use the resulting coordinates to get the forecast for your 
+        desired location.  
+      </p>
+    </div>
+
+    {{>footer}}
+  </body>
+</html>
